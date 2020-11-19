@@ -1,0 +1,59 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+        <div class="col-md-6">
+          <app-add-offer [offers]="offers"></app-add-offer>
+        </div>
+      <div class="col-md-10">
+        <div class="card">
+          <div class="card-header card-header-danger">
+            <h4 class="card-title ">Offers List</h4>
+            <p class="card-category"> You can check proper links associated with each offer </p>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table">
+                <thead class=" text-primary">
+                  <th>
+                    ID
+                  </th>
+                  <th>
+                    Name
+                  </th>
+                  <th>
+                    Link
+                  </th>
+                  <th>
+                    Unsub
+                  </th>
+                  <th>
+                    MyLinks
+                  </th>
+                </thead>
+                <tbody>
+                  <tr *ngFor='let offer of offers'>
+                    <td>
+                      {{offer.id}}
+                    </td>
+                    <td>
+                      {{offer.name}}
+                    </td>
+                    <td>
+                      {{offer.link}}
+                    </td>
+                    <td>
+                      {{offer.unsub}}
+                    </td>
+                    <td class="text-primary">
+                      <button (click)="showLinks(offer)" class="btn btn-primary btn-round">Show</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

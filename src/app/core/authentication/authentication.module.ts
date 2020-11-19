@@ -22,6 +22,9 @@ import { MatCardModule } from '@angular/material/card';
     MatButtonModule,
     MatInputModule,
     MatCardModule
+  ],
+  exports: [
+    AuthenticationComponent
   ]
 })
 export class AuthenticationModule { }

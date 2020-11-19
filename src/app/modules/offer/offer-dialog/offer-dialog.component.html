@@ -1,0 +1,69 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header card-header-danger">
+            <h4 class="card-title ">My links realted to the offer : {{name}}</h4>
+          </div>
+          <div class="card-body">
+            <div>
+              <h3>Add Property</h3>
+              <form [formGroup]="propertyForm" (ngSubmit)="onSubmit()">
+                  <div class="row">
+                      <div class="col-md-2">
+                          <mat-form-field class="example-full-width" appearance="legacy">
+                            <input matInput placeholder="IndexName" formControlName="indexName">
+                          </mat-form-field>
+                        </div>
+                        <div class="col-md-2">
+                          <mat-form-field class="example-full-width" appearance="legacy">
+                              <mat-select placeholder="Value" formControlName="value">
+                                <mat-option  value="offerId"> offerId </mat-option>
+                                <mat-option  value="userId"> userId </mat-option>
+                                <mat-option  value="email"> email </mat-option>
+                              </mat-select>
+                          </mat-form-field>
+                        </div>
+                        <div class="col-md-2">
+                            <button mat-icon-button  color="primary"  type="submit" >
+                                <mat-icon>add</mat-icon>
+                              </button>
+                        </div>
+                  </div>
+              </form>
+            </div>
+            <div *ngIf="properties">
+                <h3>Properties:</h3>
+                <mat-list>
+                    <mat-list-item *ngFor="let property of properties">
+                       {{property.indexName}} => {{ property.value}}
+                       <button mat-icon-button  color="primary" (click)="onDelete(property)" >
+                        <mat-icon>delete</mat-icon>
+                      </button>
+                    </mat-list-item>
+                   </mat-list>
+            </div>
+            <div>
+                <h3>My Links:</h3>
+                <mat-list>
+                  <mat-list-item>
+                    <h5 matLine> Offer link:</h5>
+                    <p matLine>{{offerLink}}</p>
+                  </mat-list-item>
+                  <mat-list-item>
+                    <h5 matLine> Application link :</h5>
+                    <p matLine>{{applicationLink}}</p>
+                  </mat-list-item>
+                  <mat-list-item>
+                    <h5 matLine> Unsub: </h5>
+                    <p matLine>{{unsub}}</p>
+                  </mat-list-item>
+                </mat-list>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

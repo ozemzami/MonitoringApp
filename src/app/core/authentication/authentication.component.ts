@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AuthenticationService } from './authentication.service';
+import { first } from 'rxjs/operators';
+import { NotificationService } from 'src/app/shared/services/notification.service';
 
 @Component({
   selector: 'app-authentication',
@@ -10,7 +14,14 @@ export class AuthenticationComponent implements OnInit {
 
   form: FormGroup;
   public loginInvalid: boolean;
-  constructor( private fb: FormBuilder ) { }
+  submitted = false;
+  error = '';
+  constructor( private fb: FormBuilder,
+               private route: ActivatedRoute,
+               private router: Router,
+               private authenticationService: AuthenticationService,
+               private notificationService: NotificationService ) {
+               }
 
   ngOnInit() {
     this.form = this.fb.group({
@@ -18,11 +29,26 @@ export class AuthenticationComponent implements OnInit {
       password: ['', Validators.required]
     });
   }
+  // convenience getter for easy access to form fields
+  get f() { return this.form.controls; }
 
   onSubmit(): void {
-    if (this.form.status === 'VALID') {
-      console.log(this.form.value);
+
+    // stop here if form is invalid
+    if (this.form.status !== 'VALID') {
+
+      return;
     }
+    this.authenticationService.login(this.f.username.value, this.f.password.value)
+            .pipe(first())
+            .subscribe(
+                data => {
+                  this.router.navigate(['/home']);
+                },
+                error => {
+                    this.error = error;
+                    this.notificationService.showNotification('bottom', 'left', 'danger', error.message);
+                });
   }
 
 }

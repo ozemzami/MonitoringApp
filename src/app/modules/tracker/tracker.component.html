@@ -1,0 +1,153 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="col-md-10">
+      <div class="card">
+        <div class="card-header card-header-primary">
+          <div>
+            <h4 class="card-title">Clicks</h4>
+            <form [formGroup]="trackingForm">
+              <div class="row">
+                <div class="col-md-3">
+                  <mat-form-field class="example-full-width" appearance="legacy">
+                    <mat-select placeholder="user" formControlName="user">
+                      <mat-option></mat-option>
+                      <mat-option *ngFor="let user of users" [value]="user.id"> {{ user.email }} </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div class="col-md-3">
+                  <mat-form-field class="example-full-width" appearance="legacy">
+                    <mat-select placeholder="offer" formControlName="offer">
+                      <mat-option></mat-option>
+                      <mat-option *ngFor="let offer of offers" [value]="offer.id"> {{ offer.name }} </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table">
+              <thead class="text-primary">
+                <th>ID</th>
+                <th>User</th>
+                <th>Offer</th>
+                <th>Email</th>
+                <th>IP</th>
+                <th>Time Creation</th>
+              </thead>
+              <tbody>
+                <tr *ngFor="let click of dataToBeRendered">
+                  <td>
+                    {{ click.id }}
+                  </td>
+                  <td>
+                    {{ click.subscription.user.email }}
+                  </td>
+                  <td>
+                    {{ click.subscription.offer.name }}
+                  </td>
+                  <td>
+                    {{ click.email.email }}
+                  </td>
+                  <td>
+                    {{ click.ip }}
+                  </td>
+                  <td>
+                    {{ click.time }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <mat-paginator
+              [length]="length"
+              [pageSize]="pageSize"
+              [pageSizeOptions]="pageSizeOptions"
+              (page)="onChangeData($event)"
+            >
+            </mat-paginator>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-10">
+      <div class="card card-chart">
+        <div class="card-header card-header">
+          <div class="ct-chart" id="websiteViewsChart"></div>
+        </div>
+        <div class="card-body">
+          <h4 class="card-title">Clicks graph</h4>
+        </div>
+        <div class="card-footer">
+          <div class="stats">
+            <mat-form-field appearance="legacy">
+              <mat-select [(value)]="selectedOption">
+                <mat-option *ngFor="let option of options" [value]="option.value">{{ option.viewValue }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <div [ngSwitch]="selectedOption">
+              <mat-form-field *ngSwitchCase="options[1].value">
+                <mat-label>Month and Year</mat-label>
+                <input matInput [matDatepicker]="dp" [formControl]="date" />
+                <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+                <mat-datepicker
+                  #dp
+                  startView="multi-year"
+                  (yearSelected)="chosenYearHandler($event, dp)"
+                  (monthSelected)="chosenMonthHandler($event, dp)"
+                  panelClass="example-month-picker"
+                >
+                </mat-datepicker>
+              </mat-form-field>
+              <mat-form-field *ngSwitchCase="options[2].value">
+                <mat-label>Month and Year</mat-label>
+                <input matInput [matDatepicker]="dp" [formControl]="date" />
+                <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+                <mat-datepicker
+                  #dp
+                  startView="multi-year"
+                  (yearSelected)="chosenYearHandler($event, dp)"
+                  (monthSelected)="chosenMonthHandler($event, dp)"
+                  panelClass="example-month-picker"
+                >
+                </mat-datepicker>
+              </mat-form-field>
+
+              <mat-form-field *ngSwitchCase="options[3].value">
+                <mat-label>Month and Year</mat-label>
+                <input matInput [matDatepicker]="dp" [formControl]="date" />
+                <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+                <mat-datepicker
+                  #dp
+                  startView="multi-year"
+                  (yearSelected)="chosenYearHandler($event, dp)"
+                  (monthSelected)="chosenMonthHandler($event, dp)"
+                  panelClass="example-month-picker"
+                >
+                </mat-datepicker>
+              </mat-form-field>
+              <div *ngSwitchDefault></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="col-md-10">
+          <div style="display: block">
+            <canvas
+              baseChart
+              [datasets]="barChartData"
+              [labels]="barChartLabels"
+              [options]="barChartOptions"
+              [legend]="barChartLegend"
+              [chartType]="barChartType"
+            >
+            </canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

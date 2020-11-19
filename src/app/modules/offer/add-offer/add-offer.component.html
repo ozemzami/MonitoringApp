@@ -1,0 +1,29 @@
+<div class="card">
+  <div class="card-header card-header-danger">
+    <h4 class="card-title">Add Offer</h4>
+  </div>
+  <div class="card-body">
+    <form [formGroup]="offerForm" (ngSubmit)="onSubmit()">
+      <div class="row">
+        <div class="col-md-4">
+          <mat-form-field class="example-full-width" appearance="legacy">
+            <input matInput placeholder="Name" formControlName="name">
+          </mat-form-field>
+        </div>
+        <div class="col-md-8">
+          <mat-form-field class="example-full-width" appearance="legacy">
+            <input matInput placeholder="Link" formControlName="link">
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-8">
+          <mat-form-field class="example-full-width" appearance="legacy">
+            <input matInput placeholder="Unsub" formControlName="unsub">
+          </mat-form-field>
+        </div>
+      </div>
+      <button mat-raised-button type="submit" [disabled]="offerForm.invalid" class="btn btn-danger btn_valid">Add</button>
+    </form>
+  </div>
+</div>
