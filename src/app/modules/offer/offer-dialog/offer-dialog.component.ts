@@ -1,3 +1,4 @@
+import { environment } from 'src/environments/environment';
 import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AuthenticationService } from 'src/app/core/authentication/authentication.service';
@@ -25,8 +26,9 @@ export class OfferDialogComponent implements OnInit {
               private offerService: OfferService) { }
 
   ngOnInit() {
-    this.applicationLink = 'domain/click/' + this.data.offer.id + '/' + this.authService.currentUserValue.id + '/[email]';
-    this.unsub = 'domain/unsub/' + this.data.offer.id + '/' + this.authService.currentUserValue.id + '/[email]';
+    this.applicationLink = environment.apiUrl + '/redirect/click/' + this.data.offer.id +
+     '/' + this.authService.currentUserValue.id + '/[email]';
+    this.unsub = environment.apiUrl  + '/redirect/unsub/' + this.data.offer.id + '/' + this.authService.currentUserValue.id + '/[email]';
     this.name = this.data.offer.name;
     this.createForm();
     this.getProperties();
