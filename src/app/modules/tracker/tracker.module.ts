@@ -1,6 +1,3 @@
-import { DateFormatDirective } from './date-format.directive';
-import { YearMonthFormatDirective } from './year-month-format.directive';
-import { YearFormatDirective } from './year-format.directive';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TrackerRoutingModule } from './tracker-routing.module';
@@ -13,38 +10,29 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { ChartsModule } from 'ng2-charts';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
-import { DateAdapter, MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
+import { MatNativeDateModule } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
 
 
 @NgModule({
   declarations: [
-    TrackerComponent,
-    YearFormatDirective,
-    YearMonthFormatDirective,
-    DateFormatDirective
+    TrackerComponent
   ],
   imports: [
     CommonModule,
     MatSelectModule,
     TrackerRoutingModule,
+    MatNativeDateModule,
     ChartsModule,
     MatFormFieldModule,
     ReactiveFormsModule,
     MatButtonModule,
     MatPaginatorModule,
     MatDatepickerModule,
-    MatNativeDateModule,
     MatInputModule,
   ],
   providers: [
-    TrackerService,
-    {
-      provide: DateAdapter,
-      useClass: MomentDateAdapter,
-      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
-    }
+    TrackerService
   ],
 })
 export class TrackerModule { }

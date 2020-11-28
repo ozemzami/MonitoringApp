@@ -16,11 +16,12 @@ import { MatListModule } from '@angular/material/list';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatTableModule } from '@angular/material/table';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 
 @NgModule({
   declarations: [OfferComponent, OfferDialogComponent, AddOfferComponent],
-  entryComponents: [OfferDialogComponent],
+  entryComponents: [OfferDialogComponent, AddOfferComponent],
   imports: [
     CommonModule,
     OfferRoutingModule,
@@ -28,6 +29,7 @@ import { MatTableModule } from '@angular/material/table';
     MatDialogModule,
     MatFormFieldModule,
     ReactiveFormsModule,
+    MatTooltipModule,
     MatInputModule,
     MatCardModule,
     MatIconModule,

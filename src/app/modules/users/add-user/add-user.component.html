@@ -1,0 +1,58 @@
+<div class="card offer-creation" >
+  <div class="card-header card-header-danger">
+    <h4 class="card-title">Add Offer</h4>
+  </div>
+  <div class="card-body">
+    <form [formGroup]="userForm">
+      <div class="row">
+        <div class="col-md-8">
+          <mat-form-field class="example-full-width" appearance="legacy">
+            <input matInput placeholder="Email" formControlName="email">
+            <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+              <div *ngIf="f.email.errors.required">Email is required</div>
+              <div *ngIf="f.email.errors.email">Email must be a valid email address</div>
+          </div>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-8">
+          <mat-form-field class="example-full-width" appearance="legacy">
+            <input type="password" matInput placeholder="Passsword" formControlName="password">
+            <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+              <div *ngIf="f.password.errors.required">Password is required</div>
+              <div *ngIf="f.password.errors.minlength">Password must be at least 6 characters</div>
+          </div>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-8">
+          <mat-form-field class="example-full-width" appearance="legacy">
+            <input type="password" matInput placeholder="Confirm password" formControlName="confirmPassword">
+            <div *ngIf="submitted && f.confirmPassword.errors" class="invalid-feedback">
+              <div *ngIf="f.confirmPassword.errors.required">Confirm Password is required</div>
+              <div *ngIf="f.confirmPassword.errors.mustMatch">Passwords must match</div>
+          </div>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-8">
+          <mat-form-field class="example-full-width" appearance="legacy">
+            <mat-select placeholder="Role" formControlName="role">
+              <mat-option></mat-option>
+              <mat-option value="ADMIN"> Admin </mat-option>
+              <mat-option value="USER"> User </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-raised-button (click)="onSubmit()" [disabled]="userForm.invalid"
+  class="btn btn-success btn_valid" [mat-dialog-close]="true">Add</button>
+</mat-dialog-actions>

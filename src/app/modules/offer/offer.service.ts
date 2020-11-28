@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, Subject, BehaviorSubject } from 'rxjs';
 import { Offer } from 'src/app/shared/models/offer';
 import { environment } from 'src/environments/environment';
-import { Property } from 'src/app/shared/models/property';
 
 
 @Injectable({
@@ -11,7 +10,15 @@ import { Property } from 'src/app/shared/models/property';
 })
 export class OfferService {
 
+  private offersSource = new BehaviorSubject<Offer[]>([]);
+
+  offers = this.offersSource.asObservable();
+
   constructor(private http: HttpClient) { }
+
+  changeOffers(offers: Offer[]) {
+    this.offersSource.next(offers);
+  }
 
   getAllOffers(): Observable<Offer[]> {
     return this.http.get<Offer[]>(`${environment.apiUrl}/offer`);
@@ -31,5 +38,9 @@ export class OfferService {
 
   deleteProperty(propertyId: string): Observable<any> {
     return this.http.delete(`${environment.apiUrl}/sub/deleteProperty/` + propertyId);
+  }
+
+  deleteOffer(offerId: string): Observable<any> {
+    return this.http.delete<any>(`${environment.apiUrl}/offer/` + offerId);
   }
 }

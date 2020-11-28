@@ -27,9 +27,6 @@ export class TrackerComponent implements OnInit {
   date = new FormControl(moment());
   trackingForm: FormGroup;
   userIsSelected: boolean;
-  isDaySelected = false;
-  isMonthselected = false;
-  isYearSelected = false;
   offers: any;
   dataToBeRendered: any;
   subs: any;
@@ -37,6 +34,10 @@ export class TrackerComponent implements OnInit {
   length: number;
   pageSize = 10;
   pageSizeOptions: number[] = [5, 10, 25, 100];
+  range = new FormGroup({
+    start: new FormControl(),
+    end: new FormControl()
+  });
 
   users: User[];
   pageEvent: PageEvent;
@@ -72,7 +73,7 @@ export class TrackerComponent implements OnInit {
 
   options: GraphType[] = [
     { value: '24-hours', viewValue: 'Last 24 hours' },
-    { value: 'days', viewValue: 'Day' },
+    { value: 'days', viewValue: 'Range of days' },
     { value: 'month', viewValue: 'Month' },
     { value: 'year', viewValue: 'Year' },
   ];
@@ -81,9 +82,7 @@ export class TrackerComponent implements OnInit {
 
   constructor(
     private trackerService: TrackerService,
-    private fb: FormBuilder,
-    private authService: AuthenticationService
-  ) { }
+    private fb: FormBuilder) { }
 
   ngOnInit() {
     this.getAllusers();
@@ -97,35 +96,9 @@ export class TrackerComponent implements OnInit {
     });
     this.option.setValue('24-hours');
     this.option.valueChanges
-    .subscribe(data => this.selectAnOption());
+    .subscribe(data => console.log('hello'));
   }
 
-  selectAnOption(event?: Event) {
-    console.log('hello');
-    switch (this.selectedOption) {
-      case '24-hours':
-        this.isDaySelected = false;
-        this.isMonthselected = false;
-        this.isYearSelected = false;
-        this.createChart();
-        break;
-      case 'days':
-        this.isDaySelected = true;
-        this.isMonthselected = false;
-        this.isYearSelected = false;
-        break;
-      case 'month':
-        this.isDaySelected = false;
-        this.isMonthselected = true;
-        this.isYearSelected = false;
-        break;
-      case 'year':
-        this.isDaySelected = false;
-        this.isMonthselected = false;
-        this.isYearSelected = true;
-        break;
-    }
-  }
 
   getAllusers() {
     this.trackerService.getAllUsers().subscribe((users) => (this.users = users));
@@ -201,87 +174,23 @@ export class TrackerComponent implements OnInit {
       case 'days':
         this.barChartLabels = [];
         this.barChartData[0].data = [];
-        if ( this.isDaySelected ) {
+        if ( true) {
           this.getDayGraphData();
-        }
-        break;
-      case 'month':
-        this.barChartLabels = [];
-        this.barChartData[0].data = [];
-        if ( this.isMonthselected ) {
-          this.getMonthGraphData();
-        }
-        break;
-      case 'year':
-        this.barChartLabels = [];
-        this.barChartData[0].data = [];
-        if ( this.isYearSelected ) {
-          this.getYearGraphData();
         }
         break;
     }
   }
 
   getSeries(labels) {
+    const date = new Date();
     const series = [];
     for (let i = 0; i < labels.length; i++) {
-      series[i] = this.clicks.filter((click) => new Date(click.time).getHours() === labels[i]).length;
+      series[i] = this.clicks.filter((click) => new Date(click.time).getHours() === labels[i] &&
+       new Date(click.time).getHours() === date.getDate()).length;
     }
     return series;
   }
 
-  chosenYearHandler(normalizedYear: Moment, datepicker: MatDatepicker<Moment>) {
-    const ctrlValue = this.date.value;
-    ctrlValue.year(normalizedYear.year());
-    this.date.setValue(ctrlValue);
-    if ( this.selectedOption === 'year' ) {
-      datepicker.close();
-      this.getYearGraphData();
-    }
-  }
-
-  chosenMonthHandler(normalizedMonth: Moment, datepicker: MatDatepicker<Moment>) {
-    const ctrlValue = this.date.value;
-    ctrlValue.month(normalizedMonth.month());
-    this.date.setValue(ctrlValue);
-    if ( this.selectedOption === 'month' ) {
-      datepicker.close();
-      this.getMonthGraphData();
-
-    }
-  }
-
-  getYearGraphData() {
-    this.barChartLabels =  ['January', 'February', 'March', 'April', 'May', 'June', 'July',
-    'August', 'September', 'October', 'November', 'December'];
-    const series = [];
-    for (let i = 0; i < this.barChartLabels.length; i++) {
-      series[i] = this.clicks.filter(( click ) => {
-         const date = new Date(click.time);
-         return date.getFullYear() === this.date.value._d.getFullYear() && date.getMonth() === i;
-        }).length;
-    }
-    this.barChartData[0].data = series;
-  }
-
-  getMonthGraphData() {
-    this.barChartLabels = [];
-    const selectedMonth = this.date.value._d.getMonth();
-    const selectedYear = this.date.value._d.getFullYear();
-    this.date.value._d.setDate(1);
-    while ( this.date.value._d.getMonth() === selectedMonth ) {
-      this.barChartLabels.push(`${this.date.value._d.getDate()}/${selectedMonth + 1}/${this.date.value._d.getFullYear()}`);
-      this.date.value._d.setDate(this.date.value._d.getDate() + 1 );
-    }
-    const series = [];
-    for (let i = 0; i < this.barChartLabels.length; i++) {
-      series[i] = this.clicks.filter(( click ) => {
-         const date = new Date(click.time);
-         return date.getFullYear() === selectedYear && date.getMonth() === selectedMonth && date.getDate() === i + 1;
-        }).length;
-    }
-    this.barChartData[0].data = series;
-  }
 
   getDayGraphData() {
     this.barChartLabels = [];

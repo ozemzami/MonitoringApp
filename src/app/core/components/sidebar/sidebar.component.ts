@@ -1,3 +1,5 @@
+import { Role } from './../../authentication/role.enum';
+import { AuthenticationService } from 'src/app/core/authentication/authentication.service';
 import { Component, OnInit } from '@angular/core';
 
 
@@ -8,10 +10,7 @@ declare interface RouteInfo {
   icon: string;
   class: string;
 }
-export const ROUTES: RouteInfo[] = [
-  { path: '/offers', title: 'Offers',  icon: 'local_offer', class: '' },
-  { path: '/tracker', title: 'Tracker',  icon: 'track_changes', class: '' },
-];
+
 
 @Component({
   selector: 'app-sidebar',
@@ -22,10 +21,17 @@ export class SidebarComponent implements OnInit {
 
   menuItems: any[];
 
-  constructor() { }
+  constructor(private authenticationService: AuthenticationService) { }
 
   ngOnInit() {
-    this.menuItems = ROUTES.filter(menuItem => menuItem);
+    this.menuItems = [
+      { path: '/offers', title: 'Offers',  icon: 'local_offer', class: '' },
+      { path: '/tracker', title: 'Tracker',  icon: 'track_changes', class: '' }
+    ];
+    if ( this.authenticationService.currentUserValue.role === Role.ADMIN ) {
+      console.log(this.authenticationService.currentUserValue.role);
+      this.menuItems.push({ path: '/users', title: 'Users',  icon: 'person', class: '' });
+    }
   }
 
 }

@@ -1,29 +1,35 @@
-<div class="card">
+<div class="card offer-creation" >
   <div class="card-header card-header-danger">
     <h4 class="card-title">Add Offer</h4>
   </div>
   <div class="card-body">
-    <form [formGroup]="offerForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="offerForm">
       <div class="row">
         <div class="col-md-4">
           <mat-form-field class="example-full-width" appearance="legacy">
             <input matInput placeholder="Name" formControlName="name">
           </mat-form-field>
         </div>
-        <div class="col-md-8">
+      </div>
+      <div class="row">
+        <div class="col-md-12">
           <mat-form-field class="example-full-width" appearance="legacy">
             <input matInput placeholder="Link" formControlName="link">
           </mat-form-field>
         </div>
       </div>
       <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-12">
           <mat-form-field class="example-full-width" appearance="legacy">
             <input matInput placeholder="Unsub" formControlName="unsub">
           </mat-form-field>
         </div>
       </div>
-      <button mat-raised-button type="submit" [disabled]="offerForm.invalid" class="btn btn-danger btn_valid">Add</button>
     </form>
   </div>
 </div>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-raised-button (click)="onSubmit()" [disabled]="offerForm.invalid"
+  class="btn btn-success btn_valid" [mat-dialog-close]="true">Add</button>
+</mat-dialog-actions>

@@ -53,7 +53,7 @@
                     {{ click.email.email }}
                   </td>
                   <td>
-                    {{ click.ip }}
+                    {{ click.ip.split(':').pop() }}
                   </td>
                   <td>
                     {{ click.time }}
@@ -85,32 +85,19 @@
                 <mat-option *ngFor="let option of options" [value]="option.value">{{ option.viewValue }}</mat-option>
               </mat-select>
             </mat-form-field>
-            <div [ngSwitch]="selectedOption">
-              <mat-form-field *ngSwitchCase="options[1].value"  appDateFormat>
-                <mat-label>Date</mat-label>
-                <input matInput [matDatepicker]="dp" (dateChange)="getDayGraphData()" [formControl]="date" />
-                <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
-                <mat-datepicker #dp startView="multi-year" (yearSelected)="chosenYearHandler($event, dp)"
-                  (monthSelected)="chosenMonthHandler($event, dp)" >
-                </mat-datepicker>
-              </mat-form-field>
-              <mat-form-field *ngSwitchCase="options[2].value" appYearMonthFormat>
-                <mat-label>Month and Year</mat-label>
-                <input matInput [matDatepicker]="dp" [formControl]="date" />
-                <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
-                <mat-datepicker #dp startView="multi-year" (yearSelected)="chosenYearHandler($event, dp)"
-                  (monthSelected)="chosenMonthHandler($event, dp)">
-                </mat-datepicker>
-              </mat-form-field>
+            <div *ngIf="selectedOption === 'days'" >
+              <mat-form-field appearance="fill">
+                <mat-label>Enter a date range</mat-label>
+                <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
+                  <input matStartDate formControlName="start" placeholder="Start date">
+                  <input matEndDate formControlName="end" placeholder="End date">
+                </mat-date-range-input>
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-date-range-picker #picker></mat-date-range-picker>
 
-              <mat-form-field *ngSwitchCase="options[3].value"  appYearFormat>
-                <mat-label>Year</mat-label>
-                <input matInput [matDatepicker]="dp" [formControl]="date" />
-                <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
-                <mat-datepicker #dp startView="multi-year" (yearSelected)="chosenYearHandler($event, dp)">
-                </mat-datepicker>
+                <mat-error *ngIf="range.controls.start.hasError('matStartDateInvalid')">Invalid start date</mat-error>
+                <mat-error *ngIf="range.controls.end.hasError('matEndDateInvalid')">Invalid end date</mat-error>
               </mat-form-field>
-              <div *ngSwitchDefault></div>
             </div>
           </div>
         </div>

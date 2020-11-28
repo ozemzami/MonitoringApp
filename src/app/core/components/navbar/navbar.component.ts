@@ -11,7 +11,8 @@ export class NavbarComponent implements OnInit {
   title: string;
   titles = [
     {route: '/offers', title: 'Offers'},
-    {route: '/tracker', title: 'Tracker'}
+    {route: '/tracker', title: 'Tracker'},
+    {route: '/users', title: 'Users'}
   ];
 
   constructor(private authService: AuthenticationService, private router: Router) { }
@@ -19,9 +20,7 @@ export class NavbarComponent implements OnInit {
   ngOnInit() {
     this.title = this.titles.filter((title) => title.route === this.router.url)[0].title;
     this.router.events.subscribe(val => {
-      if (val instanceof NavigationEnd) {
-        this.title = this.titles.filter((title) => title.route === this.router.url)[0].title;
-      }
+      this.title = this.titles.filter((title) => title.route === this.router.url)[0].title;
     });
   }
 

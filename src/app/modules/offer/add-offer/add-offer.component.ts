@@ -15,9 +15,13 @@ export class AddOfferComponent implements OnInit {
   offer: Offer;
   @Input() offers: Offer[];
 
-  constructor(private fb: FormBuilder, private offerService: OfferService, private notificationService: NotificationService) { }
+  constructor(
+    private fb: FormBuilder,
+    private offerService: OfferService,
+    private notificationService: NotificationService) { }
 
   ngOnInit() {
+    this.offerService.offers.subscribe( offers => this.offers = offers);
     this.initForm();
   }
 
@@ -37,6 +41,7 @@ export class AddOfferComponent implements OnInit {
         const message = 'The offer : <b>' + this.offer.name + '</b> has been successfully added';
         this.notificationService.showNotification('bottom', 'left', 'success', message);
         this.offers.push(offer);
+        this.offerService.changeOffers(this.offers);
         this.offerForm.reset({
           name: '',
           link: '',

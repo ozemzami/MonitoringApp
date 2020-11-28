@@ -1,10 +1,10 @@
 <div class="main-content">
   <div class="container-fluid">
     <div class="row">
-        <div class="col-md-6">
-          <app-add-offer [offers]="offers"></app-add-offer>
+        <div class="col-md-6" *ngIf="isAdmin">
+          <button mat-raised-button (click)="addOfferDialog()" class="btn btn-primary btn_valid">Add offer</button>
         </div>
-      <div class="col-md-10">
+      <div>
         <div class="card">
           <div class="card-header card-header-danger">
             <h4 class="card-title ">Offers List</h4>
@@ -15,9 +15,6 @@
               <table class="table">
                 <thead class=" text-primary">
                   <th>
-                    ID
-                  </th>
-                  <th>
                     Name
                   </th>
                   <th>
@@ -26,15 +23,9 @@
                   <th>
                     Unsub
                   </th>
-                  <th>
-                    MyLinks
-                  </th>
                 </thead>
                 <tbody>
                   <tr *ngFor='let offer of offers'>
-                    <td>
-                      {{offer.id}}
-                    </td>
                     <td>
                       {{offer.name}}
                     </td>
@@ -44,9 +35,14 @@
                     <td>
                       {{offer.unsub}}
                     </td>
-                    <td class="text-primary">
-                      <button (click)="showLinks(offer)" class="btn btn-primary btn-round">Show</button>
-                    </td>
+                    <td class="td-actions text-right">
+                      <button mat-raised-button type="button" (click)="showLinks(offer)"  matTooltip="Show links" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
+                          <i class="material-icons">launch</i>
+                      </button>
+                      <button *ngIf="isAdmin" mat-raised-button type="button" (click)="deleteUser(offer.id)" matTooltip="Remove" [matTooltipPosition]="'above'" class="btn btn-danger btn-link btn-sm btn-just-icon">
+                          <i class="material-icons">close</i>
+                      </button>
+                  </td>
                   </tr>
                 </tbody>
               </table>
