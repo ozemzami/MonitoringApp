@@ -18,7 +18,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [UsersComponent, AddUserComponent],
-  entryComponents: [AddUserComponent],
   imports: [
     CommonModule,
     UsersRoutingModule,

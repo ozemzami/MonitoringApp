@@ -21,7 +21,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [OfferComponent, OfferDialogComponent, AddOfferComponent],
-  entryComponents: [OfferDialogComponent, AddOfferComponent],
   imports: [
     CommonModule,
     OfferRoutingModule,
