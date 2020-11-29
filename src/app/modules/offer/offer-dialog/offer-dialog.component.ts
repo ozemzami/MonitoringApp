@@ -27,9 +27,9 @@ export class OfferDialogComponent implements OnInit {
 
   ngOnInit() {
     if( environment.production) {
-      this.applicationLink = 'http://95.111.244.144/' + environment.apiUrl + '/redirect/click/' + this.data.offer.id +
+      this.applicationLink = 'http://95.111.244.144' + environment.apiUrl + '/redirect/click/' + this.data.offer.id +
      '/' + this.authService.currentUserValue.id + '/[email]';
-      this.unsub ='http://95.111.244.144/' + environment.apiUrl  + '/redirect/unsub/' + this.data.offer.id + '/' + this.authService.currentUserValue.id + '/[email]';
+      this.unsub ='http://95.111.244.144' + environment.apiUrl  + '/redirect/unsub/' + this.data.offer.id + '/' + this.authService.currentUserValue.id + '/[email]';
     } else {
       this.applicationLink = environment.apiUrl + '/redirect/click/' + this.data.offer.id +
      '/' + this.authService.currentUserValue.id + '/[email]';
