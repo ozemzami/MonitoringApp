@@ -24,7 +24,6 @@ interface GraphType {
 })
 export class TrackerComponent implements OnInit {
   option = new FormControl();
-  date = new FormControl(moment());
   trackingForm: FormGroup;
   userIsSelected: boolean;
   offers: any;
@@ -54,8 +53,8 @@ export class TrackerComponent implements OnInit {
           ticks: {
             stepSize: 1,
             min: 0,
-            maxRotation: 90,
-            minRotation: 90,
+            maxRotation: 75,
+            minRotation: 75,
             autoSkip: false,
           },
         },
@@ -73,9 +72,7 @@ export class TrackerComponent implements OnInit {
 
   options: GraphType[] = [
     { value: '24-hours', viewValue: 'Last 24 hours' },
-    { value: 'days', viewValue: 'Range of days' },
-    { value: 'month', viewValue: 'Month' },
-    { value: 'year', viewValue: 'Year' },
+    { value: 'days', viewValue: 'Range of days' }
   ];
 
   selectedOption = this.options[0].value;
@@ -97,6 +94,7 @@ export class TrackerComponent implements OnInit {
     this.option.setValue('24-hours');
     this.option.valueChanges
     .subscribe(data => console.log('hello'));
+    this.range.valueChanges.subscribe((data) => this.getRangeData())
   }
 
 
@@ -116,6 +114,32 @@ export class TrackerComponent implements OnInit {
     this.trackingForm.valueChanges.subscribe((data) => this.onValueChanged());
 
     this.onValueChanged();
+  }
+
+  getRangeData() {
+    if ( this.range.get('start').value && this.range.get('end').value ){
+      const start = new Date(this.range.get('start').value);
+      const end = new Date(this.range.get('end').value);
+      this.barChartLabels = [];
+      const series = [];
+      let i = 0;
+      while ( start.getDate() !== end.getDate() ) {
+        this.barChartLabels.push(`${start.getDate()}/${start.getMonth() + 1}/${start.getFullYear()}`);
+        series[i] = this.clicks.filter(( click ) => {
+          const date = new Date(click.time);
+          return date.getFullYear() === start.getFullYear() && date.getMonth() === start.getMonth() && date.getDate() === start.getDate();
+          }).length;
+        start.setDate(start.getDate() + 1 );
+        i++;
+      }
+      this.barChartLabels.push(`${end.getDate()}/${end.getMonth() + 1}/${end.getFullYear()}`);
+      series[i] = this.clicks.filter(( click ) => {
+        const date = new Date(click.time);
+        return date.getFullYear() === end.getFullYear() && date.getMonth() === end.getMonth() && date.getDate() === end.getDate();
+        }).length;
+
+      this.barChartData[0].data = series;
+    }
   }
 
   onValueChanged() {
@@ -175,7 +199,7 @@ export class TrackerComponent implements OnInit {
         this.barChartLabels = [];
         this.barChartData[0].data = [];
         if ( true) {
-          this.getDayGraphData();
+          this.getRangeData();
         }
         break;
     }
@@ -189,25 +213,5 @@ export class TrackerComponent implements OnInit {
        new Date(click.time).getHours() === date.getDate()).length;
     }
     return series;
-  }
-
-
-  getDayGraphData() {
-    this.barChartLabels = [];
-    const selectedDay = this.date.value._d.getDate();
-    const selectedMonth = this.date.value._d.getMonth();
-    const selectedYear = this.date.value._d.getFullYear();
-    for ( let i = 0; i < 24; i++) {
-      this.barChartLabels.push( i + 'h');
-    }
-    const series = [];
-    for (let i = 0; i < this.barChartLabels.length; i++) {
-      series[i] = this.clicks.filter(( click ) => {
-         const date = new Date(click.time);
-         return date.getFullYear() === selectedYear && date.getMonth() === selectedMonth &&
-          date.getDate() === selectedDay && date.getHours() === i;
-        }).length;
-    }
-    this.barChartData[0].data = series;
   }
 }

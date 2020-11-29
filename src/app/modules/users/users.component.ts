@@ -1,3 +1,4 @@
+import { ConfirmationDialogComponent } from './../../core/components/confirmation-dialog/confirmation-dialog.component';
 import { AddUserComponent } from './add-user/add-user.component';
 import { User } from 'src/app/core/authentication/user';
 import { UsersService } from './users.service';
@@ -28,11 +29,22 @@ export class UsersComponent implements OnInit {
     const dialogRef = this.dialog.open(AddUserComponent);
   }
 
-  deleteUser(userId: string) {
-    this.usersService.deleteUser(userId)
-    .subscribe(() => {
-      const removedUser = this.users.filter( user => user.id !== userId);
-      this.usersService.changeUsers(removedUser);
+  deleteUser(user: User) {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      maxWidth: '400px',
+      data: {
+        title: 'Confirmation',
+        message: 'Are you sure to delete the user: ' + user.email
+      }
+    });
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      if ( dialogResult) {
+        this.usersService.deleteUser(user.id)
+        .subscribe(() => {
+          const removedUser = this.users.filter( user1 => user1.id !== user.id);
+          this.usersService.changeUsers(removedUser);
+        });
+      }
     });
   }
 

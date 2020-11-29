@@ -1,3 +1,4 @@
+import { ConfirmationDialogComponent } from './../../core/components/confirmation-dialog/confirmation-dialog.component';
 import { AuthenticationService } from 'src/app/core/authentication/authentication.service';
 import { AddOfferComponent } from './add-offer/add-offer.component';
 import { Component, OnInit } from '@angular/core';
@@ -42,11 +43,22 @@ export class OfferComponent implements OnInit {
     const dialogRef = this.dialog.open(AddOfferComponent);
   }
 
-  deleteUser(offerId: string) {
-    this.offerService.deleteOffer(offerId)
-    .subscribe(() => {
-      const removedUser = this.offers.filter( offer => offer.id !== offerId);
-      this.offerService.changeOffers(removedUser);
+  deleteOffer(offer: Offer) {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      maxWidth: '400px',
+      data: {
+        title: 'Confirmation',
+        message: 'Are you sure to delete the user: ' + offer.name
+      }
+    });
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      if ( dialogResult) {
+        this.offerService.deleteOffer(offer.id)
+        .subscribe(() => {
+          const removedUser = this.offers.filter( offer1 => offer1.id !== offer.id);
+          this.offerService.changeOffers(removedUser);
+        });
+          }
     });
   }
 

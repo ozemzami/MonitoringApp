@@ -39,7 +39,7 @@
                       <button mat-raised-button type="button" (click)="showLinks(offer)"  matTooltip="Show links" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
                           <i class="material-icons">launch</i>
                       </button>
-                      <button *ngIf="isAdmin" mat-raised-button type="button" (click)="deleteUser(offer.id)" matTooltip="Remove" [matTooltipPosition]="'above'" class="btn btn-danger btn-link btn-sm btn-just-icon">
+                      <button *ngIf="isAdmin" mat-raised-button type="button" (click)="deleteOffer(offer)" matTooltip="Remove" [matTooltipPosition]="'above'" class="btn btn-danger btn-link btn-sm btn-just-icon">
                           <i class="material-icons">close</i>
                       </button>
                   </td>
