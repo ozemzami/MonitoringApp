@@ -93,8 +93,8 @@ export class TrackerComponent implements OnInit {
     });
     this.option.setValue('24-hours');
     this.option.valueChanges
-    .subscribe(data => console.log('hello'));
-    this.range.valueChanges.subscribe((data) => this.getRangeData())
+    .subscribe(data => this.createChart());
+    this.range.valueChanges.subscribe((data) => this.getRangeData());
   }
 
 
@@ -210,7 +210,7 @@ export class TrackerComponent implements OnInit {
     const series = [];
     for (let i = 0; i < labels.length; i++) {
       series[i] = this.clicks.filter((click) => new Date(click.time).getHours() === labels[i] &&
-       new Date(click.time).getHours() === date.getDate()).length;
+       new Date(click.time).getDate() === date.getDate()).length;
     }
     return series;
   }

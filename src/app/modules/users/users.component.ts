@@ -26,7 +26,7 @@ export class UsersComponent implements OnInit {
 
 
   addUserDialog() {
-    const dialogRef = this.dialog.open(AddUserComponent);
+    this.dialog.open(AddUserComponent);
   }
 
   deleteUser(user: User) {

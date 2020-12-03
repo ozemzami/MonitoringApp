@@ -26,9 +26,18 @@ export class OfferDialogComponent implements OnInit {
               private offerService: OfferService) { }
 
   ngOnInit() {
-    this.applicationLink = environment.apiUrl + '/redirect/click/' + this.data.offer.id +
-     '/' + this.authService.currentUserValue.id + '/[email]';
-    this.unsub = environment.apiUrl  + '/redirect/unsub/' + this.data.offer.id + '/' + this.authService.currentUserValue.id + '/[email]';
+    if( environment.production) {
+      this.applicationLink = 'http://95.111.244.144' + environment.apiUrl + '/redirect/click/' +
+      this.data.offer.id + this.data.offerSuffix +
+      '/' + this.authService.currentUserValue.id + this.data.userSuffix +  '/[email]';
+      this.unsub ='http://95.111.244.144' + environment.apiUrl  + '/redirect/unsub/' + this.data.offer.id + this.data.offerSuffix +
+      '/' + this.authService.currentUserValue.id + this.data.userSuffix + '/[email]';
+    } else {
+      this.applicationLink = environment.apiUrl + '/redirect/click/' + this.data.offer.id + this.data.offerSuffix +
+     '/' + this.authService.currentUserValue.id + this.data.userSuffix +  '/[email]';
+      this.unsub = environment.apiUrl  + '/redirect/unsub/' + this.data.offer.id + this.data.offerSuffix +
+      '/' + this.authService.currentUserValue.id + this.data.userSuffix + '/[email]';
+    }
     this.name = this.data.offer.name;
     this.createForm();
     this.getProperties();

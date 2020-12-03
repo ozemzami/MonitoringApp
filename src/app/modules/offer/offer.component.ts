@@ -31,7 +31,10 @@ export class OfferComponent implements OnInit {
 
   showLinks(offer) {
     const dialogRef = this.dialog.open(OfferDialogComponent, {
-      data: { offer },
+      data: { offer,
+              offerSuffix: Math.random().toString(36).substring(7),
+              userSuffix: Math.random().toString(36).substring(7)
+            },
     });
 
     dialogRef.afterClosed().subscribe(result => {
